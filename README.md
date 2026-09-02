@@ -1,97 +1,99 @@
-# TaskMonitor - Slack @Mentions 每日报告工具
+# TaskMonitor - Slack @Mentions Daily Report Tool
 
-自动收集你在 Slack 中被 @ 的消息，生成可勾选的任务清单。
+Automatically collect your Slack @mentions and generate a daily task checklist.
 
-## 功能
+## Features
 
-- 📬 每日自动搜索指定 channels 中 @你 的消息
-- ✅ 生成 Slack Canvas 任务清单（支持勾选完成）
-- 📋 自动汇总未完成的遗留任务
-- ⏰ 每天 9 点自动运行，开机补跑
+- Daily auto-search for @mentions in specified channels
+- Generate Slack Canvas task list (with checkboxes)
+- Auto-compile unchecked backlog items from previous days
+- Runs daily at 9 AM, with catch-up on login
 
-## 安装
+## Installation
 
-### 前置要求
+### Prerequisites
 
-1. 已安装 [Claude Code CLI](https://claude.ai/code)
-2. 已配置 Slack MCP 插件
-3. macOS 系统
+1. [Claude Code CLI](https://claude.ai/code) installed
+2. Slack MCP plugin configured
+3. macOS
 
-### 安装步骤
+### Install Steps
 
 ```bash
-# 1. 下载安装脚本
-curl -sL https://raw.githubusercontent.com/<your-repo>/taskmonitor/install.sh -o install.sh
+# 1. Download the installer
+curl -sL https://raw.githubusercontent.com/owen-stx/taskmonitor/main/install.sh -o install.sh
 
-# 2. 运行安装
+# 2. Run the installer
 bash install.sh
 ```
 
-安装时会询问：
-- **Slack User ID**: 你的 Slack 用户 ID（格式如 `U0A5D44PQJE`）
-- **Channel ID**: 接收报告的 channel ID（格式如 `C0BU1DF35SN`）
-- **监控 Channels**: 要监控的 channel 名称，逗号分隔
+The installer will prompt you for:
+- **Language**: English or Chinese
+- **Slack User ID**: Your Slack user ID (e.g., `U0A5D44PQJE`)
+- **Channel ID**: Channel to receive reports (e.g., `C0BU1DF35SN`)
+- **Channels to monitor**: Comma-separated channel names
 
-### 如何找到 Slack ID
+### How to Find Slack IDs
 
-1. **User ID**: 点击 Slack 头像 → Profile → 点击 `...` → Copy member ID
-2. **Channel ID**: 右键点击 channel → View channel details → 滚动到底部
+1. **User ID**: Click your Slack avatar → Profile → Click `...` → Copy member ID
+2. **Channel ID**: Right-click channel → View channel details → Scroll to bottom
 
-## 使用方法
+## Usage
 
-### 手动生成报告
+### Manual Report Generation
 
-在 Claude CLI 中输入：
+In Claude CLI, type:
 ```
 /taskmonitor
 ```
 
-### 自动运行
+### Automatic Runs
 
-- 每天 9:00 自动运行
-- 如果 9 点电脑未开机，开机后会自动补跑
+- Runs daily at 9:00 AM
+- If computer was off at 9 AM, runs on login
 
-### 管理命令
+### Management Commands
 
 ```bash
-# 查看日志
+# View logs
 cat ~/.claude/logs/taskmonitor.log
 
-# 手动运行脚本
+# Manual run
 ~/.claude/scripts/taskmonitor.sh
 
-# 停止定时任务
+# Stop auto-run
 launchctl unload ~/Library/LaunchAgents/com.taskmonitor.plist
 
-# 重启定时任务
+# Restart auto-run
 launchctl load ~/Library/LaunchAgents/com.taskmonitor.plist
 ```
 
-## 文件位置
+## File Locations
 
-| 文件 | 路径 |
+| File | Path |
 |------|------|
-| 命令定义 | `~/.claude/commands/taskmonitor.md` |
-| 自动化脚本 | `~/.claude/scripts/taskmonitor.sh` |
-| 定时任务配置 | `~/Library/LaunchAgents/com.taskmonitor.plist` |
-| 日志 | `~/.claude/logs/taskmonitor.log` |
+| Command definition | `~/.claude/commands/taskmonitor.md` |
+| Automation script | `~/.claude/scripts/taskmonitor.sh` |
+| LaunchAgent config | `~/Library/LaunchAgents/com.taskmonitor.plist` |
+| Logs | `~/.claude/logs/taskmonitor.log` |
 
-## 卸载
+## Uninstall
 
 ```bash
-# 停止定时任务
+# Stop auto-run
 launchctl unload ~/Library/LaunchAgents/com.taskmonitor.plist
 
-# 删除文件
+# Remove files
 rm ~/Library/LaunchAgents/com.taskmonitor.plist
 rm ~/.claude/commands/taskmonitor.md
 rm ~/.claude/scripts/taskmonitor.sh
 rm -rf ~/.claude/locks/taskmonitor-*
+rm -rf ~/.claude/logs/taskmonitor*
 ```
 
-## 自定义
+## Customization
 
-编辑 `~/.claude/commands/taskmonitor.md` 可以修改：
-- 监控的 channels 列表
-- 报告格式
-- 分类规则
+Edit `~/.claude/commands/taskmonitor.md` to modify:
+- Channels to monitor
+- Report format
+- Categorization rules (customer vs internal)
