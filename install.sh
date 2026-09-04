@@ -50,11 +50,11 @@ mkdir -p ~/.claude/locks
 if [[ "$LANG" == "zh" ]]; then
     echo "📝 生成 /taskmonitor 命令..."
     cat > ~/.claude/commands/taskmonitor.md << EOF
-# @Mentions 每日报告
+# @Mentions 每日报告 v0.2
 
 执行以下任务生成今日报告：
 
-## 任务 1: 生成昨日报告
+## 任务 1: 收集昨日 @mentions
 
 1. 搜索**昨天**在以下 channels 中直接 @${USER_ID} 的消息：
    - 监控的 channels: ${MONITOR_CHANNELS}
@@ -63,36 +63,63 @@ if [[ "$LANG" == "zh" ]]; then
    - 排除 bot 消息
    - 只包含直接 @ 的消息（搜索 \`<@${USER_ID}>\`）
 
-3. 创建 Slack Canvas，标题格式："@Mentions Report (YYYY-MM-DD)"
-
-4. 格式要求：
-   - 使用 checklist 格式（\`- [ ]\`）
-   - 客户 channels (\`ext-*\`) 放最上面
-   - 内部 channels 放下面
-   - 每个分组内按时间排序，最老的在最上面
-   - 每行格式：\`- [ ] **HH:MM** | #channel | From | 内容概要 | [→ thread](URL)\`
-
-## 任务 2: 生成遗留任务报告
+## 任务 2: 收集遗留任务 (Backlog)
 
 1. 在 Slack 中搜索之前的 Canvas 文件（标题包含 "@Mentions Report"）
-2. 读取这些 Canvas，提取所有未勾选的 checklist 项
-3. 创建第二个 Canvas，标题："Backlog (YYYY-MM-DD)"
-4. 按原始报告日期分组显示遗留任务
+2. 读取这些 Canvas，提取所有未勾选的 checklist 项（\`- [ ]\` 开头的行）
+3. 按原始报告日期分组整理遗留任务
 
-## 任务 3: 发送通知
+## 任务 3: 创建合并报告
+
+创建**单个** Slack Canvas，标题格式："@Mentions Report (YYYY-MM-DD)"
+
+Canvas 内容结构：
+\`\`\`
+# 📬 @Mentions Report
+**Date:** YYYY-MM-DD | **New:** X items | **Backlog:** Y items
+
+---
+
+## 🔵 Customer Channels (ext-*) — Yesterday
+- [ ] **HH:MM** | #channel | From | 内容概要 | [→ thread](URL)
+...
+
+---
+
+## 🟢 Internal Channels — Yesterday
+- [ ] **HH:MM** | #channel | From | 内容概要 | [→ thread](URL)
+...
+
+---
+
+# 📋 Backlog
+
+## From YYYY-MM-DD
+- [ ] ...
+\`\`\`
+
+格式要求：
+- 使用 checklist 格式（\`- [ ]\`）
+- 客户 channels (\`ext-*\`) 放最上面
+- 内部 channels 放下面
+- 每个分组内按时间排序，最老的在最上面
+- 每行格式：\`- [ ] **HH:MM** | #channel | From | 内容概要 | [→ thread](URL)\`
+- Backlog 部分按原始报告日期分组
+
+## 任务 4: 发送通知
 
 发送消息到 Channel ID: ${CHANNEL_ID}
-- 包含两个 Canvas 的链接
+- 包含 Canvas 的链接
 - 简要统计：昨日新增 X 条，遗留 Y 条
 EOF
 else
     echo "📝 Generating /taskmonitor command..."
     cat > ~/.claude/commands/taskmonitor.md << EOF
-# @Mentions Daily Report
+# @Mentions Daily Report v0.2
 
 Execute the following tasks to generate today's report:
 
-## Task 1: Generate Yesterday's Report
+## Task 1: Collect Yesterday's @mentions
 
 1. Search for messages that directly @${USER_ID} in the following channels from **yesterday**:
    - Monitored channels: ${MONITOR_CHANNELS}
@@ -101,26 +128,53 @@ Execute the following tasks to generate today's report:
    - Exclude bot messages
    - Only include direct @ mentions (search \`<@${USER_ID}>\`)
 
-3. Create a Slack Canvas with title format: "@Mentions Report (YYYY-MM-DD)"
-
-4. Format requirements:
-   - Use checklist format (\`- [ ]\`)
-   - Customer channels (\`ext-*\`) at the top
-   - Internal channels below
-   - Sort by time within each section, oldest first
-   - Each line format: \`- [ ] **HH:MM** | #channel | From | Summary | [→ thread](URL)\`
-
-## Task 2: Generate Backlog Report
+## Task 2: Collect Backlog Items
 
 1. Search Slack for previous Canvas files (title contains "@Mentions Report")
-2. Read these Canvas files, extract all unchecked checklist items
-3. Create a second Canvas with title: "Backlog (YYYY-MM-DD)"
-4. Group backlog items by original report date
+2. Read these Canvas files, extract all unchecked checklist items (\`- [ ]\` lines)
+3. Group backlog items by original report date
 
-## Task 3: Send Notification
+## Task 3: Create Combined Report
+
+Create a **single** Slack Canvas with title format: "@Mentions Report (YYYY-MM-DD)"
+
+Canvas structure:
+\`\`\`
+# 📬 @Mentions Report
+**Date:** YYYY-MM-DD | **New:** X items | **Backlog:** Y items
+
+---
+
+## 🔵 Customer Channels (ext-*) — Yesterday
+- [ ] **HH:MM** | #channel | From | Summary | [→ thread](URL)
+...
+
+---
+
+## 🟢 Internal Channels — Yesterday
+- [ ] **HH:MM** | #channel | From | Summary | [→ thread](URL)
+...
+
+---
+
+# 📋 Backlog
+
+## From YYYY-MM-DD
+- [ ] ...
+\`\`\`
+
+Format requirements:
+- Use checklist format (\`- [ ]\`)
+- Customer channels (\`ext-*\`) at the top
+- Internal channels below
+- Sort by time within each section, oldest first
+- Each line format: \`- [ ] **HH:MM** | #channel | From | Summary | [→ thread](URL)\`
+- Backlog section grouped by original report date
+
+## Task 4: Send Notification
 
 Send message to Channel ID: ${CHANNEL_ID}
-- Include links to both Canvas files
+- Include the Canvas link
 - Brief summary: X new items yesterday, Y backlog items
 EOF
 fi
