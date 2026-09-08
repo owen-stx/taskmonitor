@@ -1,10 +1,17 @@
-# Owen @Mentions Daily Report v0.2
+# Owen @Mentions Daily Report v0.3
 
 执行以下任务生成今日报告：
 
+**重要：所有日期和时间计算必须使用新加坡时间 (SGT, UTC+8)，而不是 UTC。**
+- "昨天" 指的是 SGT 时区的昨天 00:00:00 到 23:59:59
+- 搜索时使用 `after:YYYY-MM-DD before:YYYY-MM-DD` 格式时，需要根据 SGT 计算正确的日期边界
+- **周一特殊规则**：如果今天是周一，则搜索范围应包括上周五、周六、周日三天的数据（而不是只搜索周日）
+
 ## 任务 1: 收集昨日 @mentions
 
-1. 搜索**昨天**在以下 channels 中直接 @U0A5D44PQJE (Owen Liu) 的消息：
+1. 搜索在以下 channels 中直接 @U0A5D44PQJE (Owen Liu) 的消息：
+   - **普通日（周二至周五）**：搜索昨天 (SGT) 的数据
+   - **周一**：搜索上周五、周六、周日三天 (SGT) 的数据
    - 所有 `#ext-straitsx-*` channels（客户 channels）
    - `#cop-integration-engineers`
    - `#cop-client-support-ticket`
@@ -14,6 +21,7 @@
 2. 过滤条件：
    - 排除 bot 消息
    - 只包含直接 @Owen 的消息（搜索 `<@U0A5D44PQJE>`）
+   - 使用 `on:YYYY-MM-DD` 格式搜索特定日期（SGT 日期），比 `after/before` 更准确
 
 3. 回复状态检查（仅限客户 channels `ext-straitsx-*`）：
    - 读取每条 @mention 所在的 thread
@@ -41,13 +49,13 @@ Canvas 内容结构：
 
 ---
 
-## 🔵 Customer Channels (ext-straitsx-*) — Yesterday
+## 🔵 Customer Channels (ext-straitsx-*) — New (周一显示为 "Fri-Sun"，其他日子显示为 "Yesterday")
 - [ ] **HH:MM** | #channel | From | 内容概要 | 回复状态 | [→ thread](URL)
 ...
 
 ---
 
-## 🟢 Internal Channels (cop-* / DM) — Yesterday
+## 🟢 Internal Channels (cop-* / DM) — New (周一显示为 "Fri-Sun"，其他日子显示为 "Yesterday")
 - [ ] **HH:MM** | #channel | From | 内容概要 | - | [→ thread](URL)
 ...
 
