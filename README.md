@@ -9,6 +9,11 @@ Automatically collect your Slack @mentions and generate a daily task checklist.
 - Auto-compile unchecked backlog items from previous days
 - Runs daily at 9 AM, with catch-up on login
 
+## Sample
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/148d7b99-5231-4f71-b9c3-bf7a5fe2d11e" />
+
+
+
 ## Installation
 
 ### Prerequisites
