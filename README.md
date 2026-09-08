@@ -97,3 +97,11 @@ Edit `~/.claude/commands/taskmonitor.md` to modify:
 - Channels to monitor
 - Report format
 - Categorization rules (customer vs internal)
+
+## Changelog
+
+| Version | Date | Changes |
+|---------|------|---------|
+| v0.3 | 2026-09-08 | Fixed timezone issues; Added Monday special rule (includes Friday-Sunday mentions) |
+| v0.2 | 2026-09-04 | Merged backlog into single report Canvas; Updated install.sh for new format |
+| v0.1 | 2026-09-02 | Initial release: Daily @mentions collection, Canvas report generation, LaunchAgent automation |
