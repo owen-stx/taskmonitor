@@ -36,12 +36,17 @@
 
 **重要：不要使用 Slack 文件搜索来查找 Canvas，因为搜索结果不可靠。请按以下步骤操作：**
 
-1. 读取 {{REPORT_CHANNEL_NAME}} (Channel ID: {{REPORT_CHANNEL_ID}}) 的历史消息（最近 10 条）
-2. 从消息中提取之前报告的 Canvas 文件 ID（格式如 `F0C0A6Q0LAD`）
-3. 使用 `slack_read_canvas` 工具读取每个 Canvas 的内容
-4. 提取所有未勾选的 checklist 项（`- [ ]` 开头的行）
-5. 按原始报告日期分组整理遗留任务
-6. 排除今天刚创建的报告（如果有的话）
+1. 读取 {{REPORT_CHANNEL_NAME}} (Channel ID: {{REPORT_CHANNEL_ID}}) 的历史消息（最近 15 条）
+2. 从消息中提取所有报告的 Canvas 文件 ID（格式如 `F0C0A6Q0LAD`），按时间倒序排列
+3. 排除今天刚创建的报告
+4. **带容错的 Canvas 读取**：
+   - 从最近的 Canvas 开始尝试读取
+   - 如果读取失败或没有找到未完成项（`- [ ]`），继续尝试更早的 Canvas
+   - 最多尝试 3 个历史 Canvas
+   - 这样即使某天的报告有问题，也能从更早的报告中恢复 backlog
+5. 使用 `slack_read_canvas` 工具读取 Canvas 内容
+6. 提取所有未勾选的 checklist 项（`- [ ]` 开头的行）
+7. 按原始报告日期分组整理遗留任务
 
 ## 任务 3: 创建合并报告
 
