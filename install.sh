@@ -185,7 +185,7 @@ CLAUDE_PATH=$(which claude 2>/dev/null || echo "/usr/local/bin/claude")
 
 cat > ~/.claude/scripts/taskmonitor.sh << EOF
 #!/bin/bash
-# TaskMonitor Daily Report - runs at 9am daily or on login if missed
+# TaskMonitor Daily Report - runs at 10am SGT Mon-Fri or on login if missed
 
 LOG_FILE="\$HOME/.claude/logs/taskmonitor.log"
 PROMPT_FILE="\$HOME/.claude/commands/taskmonitor.md"
@@ -235,12 +235,48 @@ cat > ~/Library/LaunchAgents/com.taskmonitor.plist << EOF
     </array>
 
     <key>StartCalendarInterval</key>
-    <dict>
-        <key>Hour</key>
-        <integer>9</integer>
-        <key>Minute</key>
-        <integer>0</integer>
-    </dict>
+    <array>
+        <dict>
+            <key>Weekday</key>
+            <integer>1</integer>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Weekday</key>
+            <integer>2</integer>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Weekday</key>
+            <integer>3</integer>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Weekday</key>
+            <integer>4</integer>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+        <dict>
+            <key>Weekday</key>
+            <integer>5</integer>
+            <key>Hour</key>
+            <integer>10</integer>
+            <key>Minute</key>
+            <integer>0</integer>
+        </dict>
+    </array>
 
     <key>RunAtLoad</key>
     <true/>
@@ -274,7 +310,7 @@ if [[ "$LANG" == "zh" ]]; then
     echo ""
     echo "使用方法:"
     echo "  - 在 Claude CLI 中输入 /taskmonitor 手动生成报告"
-    echo "  - 每天 9:00 自动生成报告 (如果电脑开机)"
+    echo "  - 周一至周五新加坡时间 10:00 自动生成报告 (如果电脑开机)"
     echo "  - 开机时会自动补跑当天未生成的报告"
     echo ""
     echo "管理命令:"
@@ -286,7 +322,7 @@ else
     echo ""
     echo "Usage:"
     echo "  - Type /taskmonitor in Claude CLI to manually generate a report"
-    echo "  - Reports auto-generate daily at 9:00 AM (if computer is on)"
+    echo "  - Reports auto-generate Mon-Fri at 10:00 AM SGT (if computer is on)"
     echo "  - Missed reports run automatically on login"
     echo ""
     echo "Management commands:"
