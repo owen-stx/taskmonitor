@@ -1,4 +1,4 @@
-# {{USER_NAME}} @Mentions Daily Report v0.3
+# {{USER_NAME}} @Mentions Daily Report v0.4
 
 执行以下任务生成今日报告：
 
@@ -34,9 +34,14 @@
 
 ## 任务 2: 收集遗留任务 (Backlog)
 
-1. 在 Slack 中搜索之前的 Canvas 文件（标题包含 "{{USER_NAME}} @Mentions Report"）
-2. 读取这些 Canvas，提取所有未勾选的 checklist 项（`- [ ]` 开头的行）
-3. 按原始报告日期分组整理遗留任务
+**重要：不要使用 Slack 文件搜索来查找 Canvas，因为搜索结果不可靠。请按以下步骤操作：**
+
+1. 读取 {{REPORT_CHANNEL_NAME}} (Channel ID: {{REPORT_CHANNEL_ID}}) 的历史消息（最近 10 条）
+2. 从消息中提取之前报告的 Canvas 文件 ID（格式如 `F0C0A6Q0LAD`）
+3. 使用 `slack_read_canvas` 工具读取每个 Canvas 的内容
+4. 提取所有未勾选的 checklist 项（`- [ ]` 开头的行）
+5. 按原始报告日期分组整理遗留任务
+6. 排除今天刚创建的报告（如果有的话）
 
 ## 任务 3: 创建合并报告
 
